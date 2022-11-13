@@ -45,8 +45,7 @@ class User
                     $res['email-exists'] = '1';
                 else
                     $res['username-exists'] = '1';
-            }
-            else {
+            } else {
                 $db->write(
                     "INSERT INTO 
                         users (
@@ -61,16 +60,16 @@ class User
                         ) 
                         VALUES
                             (?,?,?,?,?,?,?,?)",
-                [
-                    $first_name,
-                    $last_name,
-                    $username,
-                    sha1($pass),
-                    $email,
-                    1,
-                    $db->read("SELECT id FROM roles WHERE name=?", ['client'], true)[0][0]['id'],
-                    $mobile
-                ]
+                    [
+                        $first_name,
+                        $last_name,
+                        $username,
+                        sha1($pass),
+                        $email,
+                        1,
+                        $db->read("SELECT id FROM roles WHERE name=?", ['client'], true)[0][0]['id'],
+                        $mobile
+                    ]
                 );
                 $res['success'] = '1';
             }
@@ -106,11 +105,9 @@ class User
                         $res['pending'] = '1';
                     else
                         $res['rejected'] = '1';
-                }
-                else
+                } else
                     $res['verify'] = '1';
-            }
-            else {
+            } else {
                 $res['not-exists'] = '1';
             }
         }
@@ -131,8 +128,7 @@ class User
         if ($userdata[1]) {
             $res['success'] = '1';
             $res['data'] = $userdata[0][0];
-        }
-        else {
+        } else {
             $image_extension = explode("/", get_headers($avatar, 1)['Content-Type'])[1];
             $image_name = rand(2e6, 3e6) . "__" . rand(2e6, 3e6) . "." . $image_extension;
             $handle = fopen("./uploads/users/" . $image_name, 'w');
@@ -143,7 +139,7 @@ class User
                 "INSERT INTO users(first_name , last_name , username ,email , password , avatar , verified , status , google_id , gender , rule)
                     VALUES (?,?,?,?,?,?,?,?,?,?,?)
                 ",
-            [$first_name, $last_name, $id, $email, rand(2e6, 3e6) . $id . rand(2e6, 3e6), $image_name, $verify, $is_client ? 2 : 1, $id, $POST['gender'], $client_role]
+                [$first_name, $last_name, $id, $email, rand(2e6, 3e6) . $id . rand(2e6, 3e6), $image_name, $verify, $is_client ? 2 : 1, $id, $POST['gender'], $client_role]
             );
             $res['data'] = $db->read("SELECT  users.id , users.first_name , users.last_name , users.email , users.verified, users.status, roles.name as rule , avatar,status  FROM users JOIN roles ON roles.id=users.rule WHERE  google_id=? OR email=? LIMIT 1", [$id, $email], true)[0][0];
             $res['success'] = '1';
@@ -182,8 +178,7 @@ class User
                     $res['success'] = '1';
                 }
             }
-        }
-        else
+        } else
             $res['not-authorized'] = '1';
         return $res;
     }
@@ -225,8 +220,7 @@ class User
                     $res['success'] = '1';
                 }
             }
-        }
-        else
+        } else
             $res['not-authorized'] = '1';
         return $res;
     }
@@ -255,8 +249,7 @@ class User
                         $res['same'] = '1';
                 }
             }
-        }
-        else
+        } else
             $res['not-authorized'] = '1';
         return $res;
     }
@@ -274,11 +267,9 @@ class User
                         unlink("../public/uploads/users/{$_SESSION['data']['avatar']}");
                     $res['same'] = '1';
                 }
-            }
-            else
+            } else
                 $res['not-exists'] = '1';
-        }
-        else
+        } else
             $res['not-authorized'] = '1';
         return $res;
     }
@@ -322,19 +313,19 @@ class User
                 $i['status'] == '0' ? 'danger' : ($i['status'] == '1' ? 'warning' : 'success'),
                 $i['status'] == '0' ? 'rejected' : ($i['status'] == '1' ? 'pending' : 'active'),
                 sprintf(
-                "
+                    "
                 <a href='%s' class='btn btn-primary btn-sm' onclick='%s' %s data-id='%s'>Edit</a>
                 <a href='%s' class='btn btn-danger btn-sm' data-id='%s' onclick='%s'>Delete</a>
             ",
-                ROOT . "ajax/users/edit",
-                isset($_SESSION['user']) && $_SESSION['user'][1] ? "editUser(event)" : "return false",
-                isset($_SESSION['user']) && $_SESSION['user'][1] ? "data-bs-toggle='modal' data-bs-target='#editUser'" : "",
-                $i['id'],
-                ROOT . "ajax/users/delete",
-                $i['id'],
-                isset($_SESSION['user']) && $_SESSION['user'][1] ? "deleteUser(event)" : "return false",
+                    ROOT . "ajax/users/edit",
+                    isset($_SESSION['user']) && $_SESSION['user'][1] ? "editUser(event)" : "return false",
+                    isset($_SESSION['user']) && $_SESSION['user'][1] ? "data-bs-toggle='modal' data-bs-target='#editUser'" : "",
+                    $i['id'],
+                    ROOT . "ajax/users/delete",
+                    $i['id'],
+                    isset($_SESSION['user']) && $_SESSION['user'][1] ? "deleteUser(event)" : "return false",
 
-            )
+                )
             );
         }
         return $str;
@@ -425,8 +416,7 @@ class User
                 unlink("../public/uploads/users/{$_SESSION['data']['avatar']}");
             if ($id == $_SESSION['data']['id'])
                 $res['same'] = '1';
-        }
-        else
+        } else
             $res['not-exists'] = '1';
         return $res;
     }
@@ -452,14 +442,11 @@ class User
                     $db->write("UPDATE users SET verified=1 WHERE id =?", [$_SESSION['data']['id']]);
                     $res['success'] = '1';
                     $_SESSOIN['data']['verified'] = 1;
-                }
-                else
+                } else
                     $res['wrong'] = '1';
-            }
-            else
+            } else
                 $res['expired'] = '1';
-        }
-        else
+        } else
             $res['not-exists'] = '1';
         return $res;
     }
@@ -496,12 +483,11 @@ class User
         $pass = isset($POST['pass']) ? trim(htmlspecialchars($POST['pass'])) : null;
         $res = [];
         $db = DB::get_instance();
-        $data = $db->read("SELECT id , first_name ,last_name, email  FROM users WHERE (username=? or email=?) AND password =? AND rule=(SELECT id FROM roles WHERE name =?)", [$user, $user, sha1($pass), "client"], true);
+        $data = $db->read("SELECT id , first_name ,last_name, email,`status`  FROM users WHERE (username=? or email=?) AND password =? AND rule=(SELECT id FROM roles WHERE name =?)", [$user, $user, sha1($pass), "client"], true);
         if ($data[1]) {
             $res['success'] = '1';
             $_SESSION['client'] = $data[0][0];
-        }
-        else
+        } else
             $res['user-not-exists'] = '1';
         return $res;
     }
@@ -528,8 +514,7 @@ class User
                     $res['username-exists'] = '1';
                 if ($email == $data[0][0]['email'])
                     $res['email-exists'] = '1';
-            }
-            else {
+            } else {
                 $data = $db->read("INSERT INTO users (username , email ,first_name ,password , status , rule) VALUES (?,?,?,?,?,?)", [$username, $email, $name, sha1($pass), 2, $db->read("SELECT id FROM roles WHERE name =?", ['client'], true)[0][0]['id']]);
                 $res['success'] = '1';
             }

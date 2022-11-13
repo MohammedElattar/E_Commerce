@@ -1,4 +1,4 @@
 ReWriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /E_Commerce_2/public [L,R=301]
+RewriteRule . /E_Commerce/public [L,R=301]

@@ -7,8 +7,7 @@ class Checkout extends Controller
         if ($user->loggedInClient() && isset($_SESSION['tmp_cart']) && $_SESSION['tmp_cart']) {
             $data['title'] = 'Checkout';
             $this->view("checkout");
-        }
-        else
+        } else
             header("Location:" . ROOT . "login");
     }
     public function summary()
@@ -16,8 +15,7 @@ class Checkout extends Controller
         if (isset($_SESSION['client']['id']) && isset($_SESSION['checkout-result'])) {
             $data['title'] = "Order Summary";
             $this->view("summary", $data);
-        }
-        else
+        } else
             header("Location:" . ROOT);
     }
 }

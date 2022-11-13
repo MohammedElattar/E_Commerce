@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
+
+</html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +14,7 @@
 </head>
 
 <body>
+    <input type="hidden" value="<?= CWD ?>" id="cwd">
 
     <div class="container">
 

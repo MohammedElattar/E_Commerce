@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  <input type="hidden" value="<?= CWD ?>" id="cwd">
+
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
@@ -26,7 +28,7 @@
           <button type="submit" class="btn solid login-btn">Login</button>
           <p class="social-text">Or</p>
           <div class="social-media">
-            <a href="<?=ROOT?>login/GoogleAuth" class="social-icon">
+            <a href="<?= ROOT ?>login/GoogleAuth" class="social-icon">
               <i class="fab fa-google"></i>
             </a>
           </div>
@@ -52,7 +54,7 @@
           <button type="submit" class="btn signup-btn">Sign Up</button>
           <p class="social-text">Or</p>
           <div class="social-media">
-            <a href="<?=ROOT?>login/GoogleAuth" class="social-icon">
+            <a href="<?= ROOT ?>login/GoogleAuth" class="social-icon">
               <i class="fab fa-google"></i>
             </a>
           </div>
